@@ -1,0 +1,8 @@
+Ana Fonksiyon:
+menu_secim : Menüdeki işlemleri seçmeye yarar.
+
+
+Goto Komutu:
+altbolum1: Öğrenci menüsünün başına dönmek için
+altbolum2: Firma menüsünün başına dönmek için
+altbolum3: Staj menüsünün başına dönmek için
