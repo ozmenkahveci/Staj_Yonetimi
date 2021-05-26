@@ -1,6 +1,44 @@
+Struct:
+ogrenci:
+-> Staj yapan öğrencinin bilgilerini tutar.
+-> ogrenciAd: Öğrencinin adını tutar.
+-> ogrenciSoyad: Öğrencinin soyadını tutar.
+-> ogrenciNo: Öğrencinin numarasını tutar.
+firma: 
+-> Staj yapılan firmaların bilgilerini tutar.
+-> vergiNo: Firmaların vergi numarasını tutar.
+-> firmaAd: Firmaların adını tutar.
+-> faaliyetAlanı: Firmaların hangi alanda faaliyet gösterdiğinin bilgisini tutar.
+staj:
+-> Staj bilgilerini tutar.
+-> stajFirmaVergiNo: Staj yapılan firmanın vergi numarasını tutar.
+
+ogrenciEkle Fonksiyonu:
+-> Sisteme eklenen öğrencilerin bilgilerini txt dosyasına yazar.
+-> ogrenci ogrenciBilgisi: Ana fonksiyonda öğrencinin bilgilerini tutar.
+-> ogrenci *pOgrenci: ogrenci ogrenciBilgisi'nin adresini tutar. Tutulan bilgileri dosyaya yazar.
+-> *i: Ana fonksiyonda struct arraylerinin indislerini tutan i'nin adresini fonksiyona çağırır.
+-> k: *i adresindeki değeri yani Ana fonksiyondaki i'nin değerini tutar.
+-> fopen: Olduğu dizinde Ogrenci.txt adlı bir dosya arar, varsa üstüne işlem yapar yoksa dosya oluşturup işlem yapar.
+Not: fopen fonksiyonu "a" modunda çalıştığı için olduğu dizinde adı verilen dosyayı arar yoksa üstüne yazar.
+-> if: Dosyanın açılamama durumunu kontrol eder.
+->fclose: Dosyayı kapatır.
+
+firmaEkle Fonksiyonu:
+-> Sisteme eklenen firmaların bilgilerini txt dosyasına yazar.
+-> firma firmaBilgisi: Ana fonksiyonda firmaların bilgilerini tutar.
+-> firma *pFirma: firma firmaBilgisi'nin adresini tutar. Tutulan bilgileri dosyaya yazar.
+-> *f: Ana fonksiyonda struct arraylerinin indislerini tutan f'nin adresini fonksiyona çağırır.
+-> m: *f adresindeki değeri yani Ana fonksiyondaki f'nin değerini tutar.
+-> fopen: Olduğu dizinde Firma.txt adlı bir dosya arar, varsa üstüne işlem yapar yoksa dosya oluşturup işlem yapar.
+Not: fopen fonksiyonu "a" modunda çalıştığı için olduğu dizinde adı verilen dosyayı arar yoksa üstüne yazar.
+-> if: Dosyanın açılamama durumunu kontrol eder.
+->fclose: Dosyayı kapatır.
+
 Ana Fonksiyon:
 menu_secim : Menüdeki işlemleri seçmeye yarar.
-
+i: ogrenciBilgisi struct'ı için indis bilgisini tutar.
+f: firmaBilgisi Struct'ı için indis bilgisini tutar.
 
 Goto Komutu:
 anamenu: Ana menünün başına dönmek için
