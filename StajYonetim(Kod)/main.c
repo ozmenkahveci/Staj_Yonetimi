@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+typedef struct {
+	int gun;
+	int ay;
+	int yil;
+}tarih;
 struct ogrenci{
 	char ogrenciAd[25];
 	char ogrenciSoyad[25];
@@ -13,7 +18,11 @@ struct firma{
 };
 struct staj{
 	int stajFirmaVergiNo;
+	tarih stajBaslamaTarihi;
+	tarih stajBitirmeTarihi;
+	char stajTuru[20];
 };
+
 
 void ogrenciEkle(struct ogrenci ogrenciBilgisi[],int *i,struct ogrenci *pOgrenci[]){
 	
@@ -24,9 +33,34 @@ void ogrenciEkle(struct ogrenci ogrenciBilgisi[],int *i,struct ogrenci *pOgrenci
 		printf("Dosya Acilmadi");
 }
 
-	fprintf(fp,"Ogrencinin Adi\t\tOgrencinin Soyadi\t\tOgrencinin Numarasi\n");
-	fprintf(fp,"---------------------------------------------------------------\n");
+
 	fprintf(fp,"%s\t\t\t%s\t\t\t\t%d\n\n",pOgrenci[k]->ogrenciAd,pOgrenci[k]->ogrenciSoyad,pOgrenci[k]->ogrenciNo);
+	
+	fclose(fp);
+}
+
+void ogrenciListele(){
+	
+	FILE *fp=fopen("Ogrenci.txt","r");
+	char ogrenciListeYazdir[50][20];
+	int i=0;
+	int b=1;
+	printf("Ogrencinin Adi\t\t\tOgrencinin Soyadi\t\tOgrencinin Numarasi\n");
+	printf("-------------------------------------------------------------------------------------------------------\n");
+	if(fp==NULL){
+		printf("Dosya Acilmadi");
+}
+	
+	while(!feof(fp)){
+		if(b%3==1){
+			printf("\n");
+		}
+		fscanf(fp,"%s",&ogrenciListeYazdir[i]);
+		printf("%s\t\t\t\t",ogrenciListeYazdir[i]);
+		i++;
+		b++;
+	}
+	
 	
 	fclose(fp);
 }
@@ -41,10 +75,54 @@ void firmaEkle(struct firma firmaBilgisi[],int *f,struct firma *pFirma[]){
 		printf("Dosya Acilmadi");
 }
 
-	fprintf(fp,"Firmanin Adi\t\tFirmanin faaliyet alani\t\tFirmanin Vergi Numarasý\n");
-	fprintf(fp,"---------------------------------------------------------------------------------\n");
+	
 	fprintf(fp,"%s\t\t\t%s\t\t\t\t%d\n\n",pFirma[m]->firmaAd,pFirma[m]->faaliyetAlani,pFirma[m]->vergiNo);
 
+	fclose(fp);
+}
+
+void firmaListele(){
+	
+	FILE *fp=fopen("Firma.txt","r");
+	char firmaListeYazdir[50][20];
+	int f=0;
+	int b=1;
+	printf("Firmanin Adi\t\tFirmanin faaliyet alani\t\tFirmanin Vergi Numarasi\n");
+	printf("-------------------------------------------------------------------------------------------------\n");
+	
+	if(fp==NULL){
+		printf("Dosya Acilmadi");
+}
+
+	while(!feof(fp)){
+		if(b%3==1){
+			printf("\n");
+		}
+		fscanf(fp,"%s",&firmaListeYazdir[f]);
+		printf("%s\t\t\t",firmaListeYazdir[f]);
+		f++;
+		b++;
+	}
+
+
+
+	fclose(fp);
+}
+
+void stajEkle(struct staj stajBilgisi[],int *s,struct staj *pStaj[]){
+	
+	int j=*s;
+	
+	FILE *fp=fopen("Staj.txt","a");
+	
+	if(fp==NULL){
+		printf("Dosya Acilmadi");
+}
+	
+	
+	
+	
+	
 	fclose(fp);
 }
 
@@ -53,12 +131,14 @@ int main()
     int menu_secim;
     int i=0;
     int f=0;
+    int s=0;
 	struct ogrenci ogrenciBilgisi[10];
 	struct firma firmaBilgisi[10];
 	struct staj stajBilgisi[10];
 	
 	struct ogrenci *pOgrenci[10];
 	struct firma *pFirma[10];
+	struct staj *pStaj[10];
 	
     printf("\tStaj Yonetim Programina Hos Geldiniz\n\n");
     anamenu:
@@ -114,8 +194,9 @@ int main()
                     break;
 
                 case 4:
+                	printf("\n\t-----------Ogrenci Listele-----------\n\n");
 
-
+					ogrenciListele();
                     goto altbolum1;
                     break;
 
@@ -156,6 +237,7 @@ int main()
                 	
                 	firmaEkle(firmaBilgisi,&f,pFirma);
                 	
+                	f++;
 
 
                     goto altbolum2;
@@ -174,7 +256,9 @@ int main()
                     break;
 
                 case 4:
-
+                	printf("\n\t-----------Firma Listele-----------\n\n");
+                	
+					firmaListele();
 
                     goto altbolum2;
                     break;
@@ -200,7 +284,20 @@ int main()
             switch(menu_secim)
             {
                 case 1:
-
+					printf("\n\t-----------Staj Ekleme-----------\n\n");
+					
+					printf("Staj yapilan firmanin vergi numarasi giriniz: ");
+					scanf("%d",&stajBilgisi[s].stajFirmaVergiNo);
+					printf("Staja baslama tarihini giriniz: ");
+					scanf("%d %d %d",&stajBilgisi[s].stajBaslamaTarihi.gun,&stajBilgisi[s].stajBaslamaTarihi.ay,&stajBilgisi[s].stajBaslamaTarihi.yil);
+					printf("Staj bitis tarihi giriniz: ");
+					scanf("%d %d %d",&stajBilgisi[s].stajBitirmeTarihi.gun,&stajBilgisi[s].stajBitirmeTarihi.ay,&stajBilgisi[s].stajBitirmeTarihi.yil);
+					
+					pStaj[s]=&stajBilgisi[s];
+					
+					stajEkle(stajBilgisi,&s,pStaj);
+					
+					s++;
 
                     goto altbolum3;
                     break;

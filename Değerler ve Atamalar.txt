@@ -1,17 +1,29 @@
+typedef struct:
+-> Staj bilgileri istenirken tarih bilgisini alabilmek için atadık. İsmi "tarih" olarak belirlenmiştir.
+-> gun: Tarihteki gün bilgisini tutar.
+-> ay: Tarihteki ay bilgisini tutar.
+-> yil: Tarihteki yil bilgisini tutar.
+
 Struct:
+
 ogrenci:
 -> Staj yapan öğrencinin bilgilerini tutar.
 -> ogrenciAd: Öğrencinin adını tutar.
 -> ogrenciSoyad: Öğrencinin soyadını tutar.
 -> ogrenciNo: Öğrencinin numarasını tutar.
+
 firma: 
 -> Staj yapılan firmaların bilgilerini tutar.
 -> vergiNo: Firmaların vergi numarasını tutar.
 -> firmaAd: Firmaların adını tutar.
 -> faaliyetAlanı: Firmaların hangi alanda faaliyet gösterdiğinin bilgisini tutar.
+
 staj:
 -> Staj bilgilerini tutar.
 -> stajFirmaVergiNo: Staj yapılan firmanın vergi numarasını tutar.
+-> stajBaslamaTarihi: Staja başlanıldığı günün tarih bilgisini typedef olarak tutar.
+-> stajBitirmeTarihi: Stajın bittiği günün tarih bilgisini typedef olarak tutar.
+-> stajTuru: Girilen stajın hangi türde(donanım-yazılım) yapıldığı bilgisini tutar.
 
 ogrenciEkle Fonksiyonu:
 -> Sisteme eklenen öğrencilerin bilgilerini txt dosyasına yazar.
@@ -24,6 +36,18 @@ Not: fopen fonksiyonu "a" modunda çalıştığı için olduğu dizinde adı ver
 -> if: Dosyanın açılamama durumunu kontrol eder.
 ->fclose: Dosyayı kapatır.
 
+ogrenciListele Fonksiyonu
+-> Ogrenci.txt dosyasına eklenen öğrencileri okuyup programda yazdırır.
+-> fopen fonksiyonu ile dosyayı açtık
+-> ogrenciListeYazdir: Bu char dizisi dosyadaki her kelimeyi tutmak için atanmıştır.
+-> i: Döngüye girecek olan ogrenciListeYazdir dizisinin indisidir.
+-> b: Programda listelenecek olan öğrenci bilgilerinin düzenini sağlamak amacıyla atanmıştır.
+-> if: Dosyanın açılıp açılmadığını kontrol eder.
+-> while Döngüsü: Dosyadaki son kelimeye kadar döner.
+-> if: b değişkeninin her 3'e bölümünde kalan 1 olduğu zaman bu if bloğunun içine girecektir. Burada da bir alt satıra geçme işlemi yapılıyor.
+-> fscanf Fonksiyonu ile dosyadaki bilgiler okunuyor.
+-> printf Fonksiyonu ile programda yazdırma işlemi yapılıyor.
+
 firmaEkle Fonksiyonu:
 -> Sisteme eklenen firmaların bilgilerini txt dosyasına yazar.
 -> firma firmaBilgisi: Ana fonksiyonda firmaların bilgilerini tutar.
@@ -35,10 +59,24 @@ Not: fopen fonksiyonu "a" modunda çalıştığı için olduğu dizinde adı ver
 -> if: Dosyanın açılamama durumunu kontrol eder.
 ->fclose: Dosyayı kapatır.
 
+firmaListele Fonksiyonu
+-> Firma.txt dosyasına eklenen firma bilgilerini okuyup programda yazdırır.
+-> fopen fonksiyonu ile dosyayı açtık
+-> firmaListeYazdir: Bu char dizisi dosyadaki her kelimeyi tutmak için atanmıştır.
+-> i: Döngüye girecek olan firmaListeYazdir dizisinin indisidir.
+-> b: Programda listelenecek olan firma bilgilerinin düzenini sağlamak amacıyla atanmıştır.
+-> if: Dosyanın açılıp açılmadığını kontrol eder.
+-> while Döngüsü: Dosyadaki son kelimeye kadar döner.
+-> if: b değişkeninin her 3'e bölümünde kalan 1 olduğu zaman bu if bloğunun içine girecektir. Burada da bir alt satıra geçme işlemi yapılıyor.
+-> fscanf Fonksiyonu ile dosyadaki bilgiler okunuyor.
+-> printf Fonksiyonu ile programda yazdırma işlemi yapılıyor.
+
 Ana Fonksiyon:
 menu_secim : Menüdeki işlemleri seçmeye yarar.
 i: ogrenciBilgisi struct'ı için indis bilgisini tutar.
 f: firmaBilgisi Struct'ı için indis bilgisini tutar.
+s: stajBilgisi struct'ı için indis bilgisini tutar.
+
 
 Goto Komutu:
 anamenu: Ana menünün başına dönmek için
