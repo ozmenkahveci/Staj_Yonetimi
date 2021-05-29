@@ -1,0 +1,4 @@
+ABC			Teknoloji				650065
+
+DFG			Oto				750075
+
