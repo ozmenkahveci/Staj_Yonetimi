@@ -24,88 +24,235 @@ struct staj{
 };
 
 
-void ogrenciEkle(struct ogrenci ogrenciBilgisi[],int *i,struct ogrenci *pOgrenci[]){
+void ogrenciEkle(struct ogrenci ogrenciBilgisi[],int *i,struct ogrenci *pOgrenci[],struct ogrenci ogrenciBilgisiYedek[]){
 	
 	int k=*i;
-	FILE *fp=fopen("Ogrenci.txt","a");
+	int e=0;
+	FILE *fp=fopen("Ogrenci.txt","r");
+	while(!feof(fp)){
+		fscanf(fp,"%s %s %d",&ogrenciBilgisiYedek[e].ogrenciAd,&ogrenciBilgisiYedek[e].ogrenciSoyad,&ogrenciBilgisiYedek[e].ogrenciNo);	
+		if(ogrenciBilgisiYedek[e].ogrenciNo==pOgrenci[k]->ogrenciNo){
+			printf("\nAyni Numaraya Sahip Bir Ogrenci Var!!\n");
+			return ;
+		}
+		e++;	
+	}
+	fclose(fp);
+	fp=fopen("Ogrenci.txt","a");
 	
 	if(fp==NULL){
 		printf("Dosya Acilmadi");
+		
+}
+	fprintf(fp,"%s %s %d\n\n",pOgrenci[k]->ogrenciAd,pOgrenci[k]->ogrenciSoyad,pOgrenci[k]->ogrenciNo);
+	fclose(fp);
 }
 
 
-	fprintf(fp,"%s\t\t\t%s\t\t\t\t%d\n\n",pOgrenci[k]->ogrenciAd,pOgrenci[k]->ogrenciSoyad,pOgrenci[k]->ogrenciNo);
+void ogrenciDuzenleme(struct ogrenci ogrenciBilgisiYedek[]){
 	
+	FILE *fp=fopen("Ogrenci.txt","r");
+	int i=0,a=0,g=0;
+	int ogrenciNumarasi;
+	if(fp==NULL){
+		printf("Dosya Acilmadi");
+}
+	printf("Duzenlenecek ogrencinin numarasi: ");
+	scanf("%d",&ogrenciNumarasi);
+	
+	while(!feof(fp)){
+		fscanf(fp,"%s %s %d",&ogrenciBilgisiYedek[i].ogrenciAd,&ogrenciBilgisiYedek[i].ogrenciSoyad,&ogrenciBilgisiYedek[i].ogrenciNo);
+		if(ogrenciBilgisiYedek[i].ogrenciNo==ogrenciNumarasi){
+			printf("Ogrencinin Adini Giriniz: ");
+			scanf("%s",&ogrenciBilgisiYedek[i].ogrenciAd);
+			printf("Ogrencinin Soydini Giriniz: ");
+			scanf("%s",&ogrenciBilgisiYedek[i].ogrenciSoyad);
+			printf("Ogrencinin Numarasini Giriniz: ");
+			scanf("%d",&ogrenciBilgisiYedek[i].ogrenciNo);	
+			g++;
+		}
+		if(ogrenciBilgisiYedek[i].ogrenciNo==0){
+			goto ogrenciDuzenleYazdir;
+		}
+		i++;	
+	}
+ogrenciDuzenleYazdir:
+	if(g==0){
+		printf("\nOgrenci Bulunamadi!\n");
+		return;
+	}
+	fclose(fp);
+	fp = fopen("Ogrenci.txt","w");
+	for(a=0;a<=(i-1);a++){
+	fprintf(fp,"%s %s %d\n\n",ogrenciBilgisiYedek[a].ogrenciAd,ogrenciBilgisiYedek[a].ogrenciSoyad,ogrenciBilgisiYedek[a].ogrenciNo);
+}
+	fclose(fp);	
+}
+
+void ogrenciSilme(struct ogrenci ogrenciBilgisiYedek[]){
+	FILE *fp=fopen("Ogrenci.txt","r");
+	int i=0,a=0,g=0;
+	int ogrenciNumarasi;
+	if(fp==NULL){
+		printf("Dosya Acilmadi");
+}
+	printf("Silinecek ogrencinin numarasi: ");
+	scanf("%d",&ogrenciNumarasi);
+	
+	while(!feof(fp)){
+		fscanf(fp,"%s %s %d",&ogrenciBilgisiYedek[i].ogrenciAd,&ogrenciBilgisiYedek[i].ogrenciSoyad,&ogrenciBilgisiYedek[i].ogrenciNo);
+		
+		if(ogrenciBilgisiYedek[i].ogrenciNo==0){
+			goto ogrenciSilipYazdir;
+		}
+		i++;	
+	}
+ogrenciSilipYazdir:
+	
+	fclose(fp);
+
+	for(a=0;a<=(i-1);a++){
+	if(ogrenciBilgisiYedek[a].ogrenciNo==ogrenciNumarasi){
+		a++;
+		g++;
+}
+	if(g==0){
+		printf("\nOgrenci Bulunamadi!\n");
+		return;
+	}
+	fp = fopen("Ogrenci.txt","w");
+	fprintf(fp,"%s %s %d\n\n",ogrenciBilgisiYedek[a].ogrenciAd,ogrenciBilgisiYedek[a].ogrenciSoyad,ogrenciBilgisiYedek[a].ogrenciNo);
+}
 	fclose(fp);
 }
 
 void ogrenciListele(){
 	
 	FILE *fp=fopen("Ogrenci.txt","r");
-	char ogrenciListeYazdir[50][20];
 	int i=0;
-	int b=1;
-	printf("Ogrencinin Adi\t\t\tOgrencinin Soyadi\t\tOgrencinin Numarasi\n");
-	printf("-------------------------------------------------------------------------------------------------------\n");
+	
 	if(fp==NULL){
 		printf("Dosya Acilmadi");
-}
-	
-	while(!feof(fp)){
-		if(b%3==1){
-			printf("\n");
-		}
-		fscanf(fp,"%s",&ogrenciListeYazdir[i]);
-		printf("%s\t\t\t\t",ogrenciListeYazdir[i]);
-		i++;
-		b++;
+}	
+	while(!feof(fp)){		
+		fputchar(fgetc(fp));	
 	}
-	
-	
 	fclose(fp);
 }
 
-void firmaEkle(struct firma firmaBilgisi[],int *f,struct firma *pFirma[]){
+void firmaEkle(struct firma firmaBilgisi[],int *f,struct firma *pFirma[],struct firma firmaBilgisiYedek[]){
 
 	int m=*f;
-	
-	FILE *fp=fopen("Firma.txt","a");
+	int e=0;
+	FILE *fp=fopen("Firma.txt","r");
+	while(!feof(fp)){
+		fscanf(fp,"%s %s %d",&firmaBilgisiYedek[e].firmaAd,&firmaBilgisiYedek[e].faaliyetAlani,&firmaBilgisiYedek[e].vergiNo);	
+		if(firmaBilgisiYedek[e].vergiNo==pFirma[m]->vergiNo){
+			printf("\nAyni Vergi Numarasina Sahip Bir Firma Var!!\n");
+			return ;
+		}
+		e++;	
+	}
+	fclose(fp);
+	fp=fopen("Firma.txt","a");
 	
 	if(fp==NULL){
 		printf("Dosya Acilmadi");
 }
 
 	
-	fprintf(fp,"%s\t\t\t%s\t\t\t\t%d\n\n",pFirma[m]->firmaAd,pFirma[m]->faaliyetAlani,pFirma[m]->vergiNo);
+	fprintf(fp,"%s %s %d\n\n",pFirma[m]->firmaAd,pFirma[m]->faaliyetAlani,pFirma[m]->vergiNo);
 
+	fclose(fp);
+}
+
+void firmaDuzenleme(struct firma firmaBilgisiYedek[]){
+	
+	FILE *fp=fopen("Firma.txt","r");
+	int i=0,a=0,g=0;
+	int firmaVergiNo;
+	if(fp==NULL){
+		printf("Dosya Acilmadi");
+}
+	printf("Duzenlenecek firmanin vergi numarasi: ");
+	scanf("%d",&firmaVergiNo);
+	
+	while(!feof(fp)){
+		firmaBilgisiYedek[i].vergiNo=0;
+		fscanf(fp,"%s %s %d",&firmaBilgisiYedek[i].firmaAd,&firmaBilgisiYedek[i].faaliyetAlani,&firmaBilgisiYedek[i].vergiNo);
+		if(firmaBilgisiYedek[i].vergiNo==firmaVergiNo){
+			printf("Firmanin Adini Giriniz: ");
+			scanf("%s",&firmaBilgisiYedek[i].firmaAd);
+			printf("Firmanin Faaliyet Alanini Giriniz: ");
+			scanf("%s",&firmaBilgisiYedek[i].faaliyetAlani);
+			printf("Firmanin Vergi Numarasini Giriniz: ");
+			scanf("%d",&firmaBilgisiYedek[i].vergiNo);	
+			g++;
+		}
+		if(firmaBilgisiYedek[i].vergiNo==0){
+			goto firmaDuzenleYazdir;
+		}
+		i++;	
+	}
+firmaDuzenleYazdir:
+	if(g==0){
+		printf("\nFirma Bulunamadi!\n");
+		return;
+	}
+	fclose(fp);
+	fp = fopen("Firma.txt","w");
+	for(a=0;a<=(i-1);a++){
+	fprintf(fp,"%s %s %d\n\n",firmaBilgisiYedek[a].firmaAd,firmaBilgisiYedek[a].faaliyetAlani,firmaBilgisiYedek[a].vergiNo);
+}
+	fclose(fp);	
+}
+
+void firmaSilme(struct firma firmaBilgisiYedek[]){
+	FILE *fp=fopen("Firma.txt","r");
+	int i=0,a=0,g=0;
+	int firmaVergiNo;
+	if(fp==NULL){
+		printf("Dosya Acilmadi");
+}
+	printf("Silinecek firmanin vergi numarasi: ");
+	scanf("%d",&firmaVergiNo);
+	
+	while(!feof(fp)){
+		firmaBilgisiYedek[i].vergiNo=0;
+		fscanf(fp,"%s %s %d",&firmaBilgisiYedek[i].firmaAd,&firmaBilgisiYedek[i].faaliyetAlani,&firmaBilgisiYedek[i].vergiNo);
+		if(firmaBilgisiYedek[i].vergiNo==0){
+			goto firmaSilipYazdir;
+		}
+		i++;	
+	}
+firmaSilipYazdir:
+	fclose(fp);
+	
+	for(a=0;a<=(i-1);a++){
+	if(firmaBilgisiYedek[a].vergiNo==firmaVergiNo){
+		a++;
+		g++;
+}
+	if(g==0){
+		printf("\nFirma Bulunamadi!\n");
+		return;
+	}
+	fp = fopen("Firma.txt","w");
+	fprintf(fp,"%s %s %d\n\n",firmaBilgisiYedek[a].firmaAd,firmaBilgisiYedek[a].faaliyetAlani,firmaBilgisiYedek[a].vergiNo);
+}
 	fclose(fp);
 }
 
 void firmaListele(){
 	
 	FILE *fp=fopen("Firma.txt","r");
-	char firmaListeYazdir[50][20];
-	int f=0;
-	int b=1;
-	printf("Firmanin Adi\t\tFirmanin faaliyet alani\t\tFirmanin Vergi Numarasi\n");
-	printf("-------------------------------------------------------------------------------------------------\n");
 	
 	if(fp==NULL){
 		printf("Dosya Acilmadi");
 }
-
-	while(!feof(fp)){
-		if(b%3==1){
-			printf("\n");
-		}
-		fscanf(fp,"%s",&firmaListeYazdir[f]);
-		printf("%s\t\t\t",firmaListeYazdir[f]);
-		f++;
-		b++;
-	}
-
-
-
+	while(!feof(fp)){		
+		fputchar(fgetc(fp));	
+	}	
 	fclose(fp);
 }
 
@@ -119,10 +266,6 @@ void stajEkle(struct staj stajBilgisi[],int *s,struct staj *pStaj[]){
 		printf("Dosya Acilmadi");
 }
 	
-	
-	
-	
-	
 	fclose(fp);
 }
 
@@ -135,6 +278,9 @@ int main()
 	struct ogrenci ogrenciBilgisi[10];
 	struct firma firmaBilgisi[10];
 	struct staj stajBilgisi[10];
+	
+	struct ogrenci ogrenciBilgisiYedek[10];
+	struct firma firmaBilgisiYedek[10];
 	
 	struct ogrenci *pOgrenci[10];
 	struct firma *pFirma[10];
@@ -174,7 +320,7 @@ int main()
 					scanf("%d",&ogrenciBilgisi[i].ogrenciNo);
 					pOgrenci[i]=&ogrenciBilgisi[i];
 					
-					ogrenciEkle(ogrenciBilgisi,&i,pOgrenci);
+					ogrenciEkle(ogrenciBilgisi,&i,pOgrenci,ogrenciBilgisiYedek);
 					
 					i++;
 					
@@ -182,12 +328,17 @@ int main()
                     break;
 
                 case 2:
-
-
+					printf("\n\t-----------Ogrenci Duzenleme-----------\n\n");
+					
+					ogrenciDuzenleme(ogrenciBilgisiYedek);
+					
                     goto altbolum1;
                     break;
 
                 case 3:
+                	printf("\n\t-----------Ogrenci Silme-----------\n\n");
+                	
+                	ogrenciSilme(ogrenciBilgisiYedek);
 
 
                     goto altbolum1;
@@ -235,23 +386,25 @@ int main()
                 	
                 	pFirma[f]=&firmaBilgisi[f];
                 	
-                	firmaEkle(firmaBilgisi,&f,pFirma);
+                	firmaEkle(firmaBilgisi,&f,pFirma,firmaBilgisiYedek);
                 	
                 	f++;
-
-
                     goto altbolum2;
                     break;
 
                 case 2:
-
-
+                	printf("\n\t-----------Firma Duzenleme-----------\n\n");
+                	
+                	firmaDuzenleme(firmaBilgisiYedek);
+                	
                     goto altbolum2;
                     break;
 
                 case 3:
-
-
+                	printf("\n\t-----------Firma Silme-----------\n\n");
+                	
+                	firmaSilme(firmaBilgisiYedek);
+                	
                     goto altbolum2;
                     break;
 
@@ -334,9 +487,6 @@ int main()
                     printf("Lutfen menude bulunan islemlerden birini seciniz!\n");
                     goto anamenu;
     }
-
-
-
 
     return 0;
 }
