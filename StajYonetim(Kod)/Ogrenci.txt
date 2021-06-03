@@ -1,6 +1,0 @@
-ozmen			kahveci				102
-
-ali			ahmet				250
-
-ozmen			kahveci				150
-
