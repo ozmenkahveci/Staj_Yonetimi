@@ -24,13 +24,17 @@ staj:
 -> stajBaslamaTarihi: Staja başlanıldığı günün tarih bilgisini typedef olarak tutar.
 -> stajBitirmeTarihi: Stajın bittiği günün tarih bilgisini typedef olarak tutar.
 -> stajTuru: Girilen stajın hangi türde(donanım-yazılım) yapıldığı bilgisini tutar.
+-> hafta: Tarihlerden hesaplanan stajın kaç hafta sürdüğü bilgisini tutar.
 
 ogrenciEkle Fonksiyonu:
 -> Sisteme eklenen öğrencilerin bilgilerini txt dosyasına yazar.
 -> ogrenci ogrenciBilgisi: Ana fonksiyonda öğrencinin bilgilerini tutar.
+-> ogrenci ogrenciBilgisiYedek: Ogrenci.txt dosyasındaki verileri okur eğer aynı numaraya sahip bir öğrenci varsa hata verir.
 -> ogrenci *pOgrenci: ogrenci ogrenciBilgisi'nin adresini tutar. Tutulan bilgileri dosyaya yazar.
 -> *i: Ana fonksiyonda struct arraylerinin indislerini tutan i'nin adresini fonksiyona çağırır.
 -> k: *i adresindeki değeri yani Ana fonksiyondaki i'nin değerini tutar.
+-> fopen: Ogrenci.txt dosyası a+ modunda açılarak eğer dosya yoksa oluşturur varsa da dosya sonuna kadar okunur.
+-> fclose: okuma ve yazma modunda açılan dosya kapanır.
 -> fopen: Olduğu dizinde Ogrenci.txt adlı bir dosya arar, varsa üstüne işlem yapar yoksa dosya oluşturup işlem yapar.
 Not: fopen fonksiyonu "a" modunda çalıştığı için olduğu dizinde adı verilen dosyayı arar yoksa üstüne yazar.
 -> if: Dosyanın açılamama durumunu kontrol eder.
@@ -63,32 +67,28 @@ Not: fopen fonksiyonu "r" modunda çalıştığı için olduğu dizinde dosya ar
 -> i: ogrenciBilgisiYedek için indis bilgisidir.
 -> a: for döngüsü değişkeni.
 -> g: Öğrenci bilgilerinin silinip silinmediğini kontrol eden sayaç.
+-> q: kullanıcıdan alınan öğrenci numarasının ogrenciBilgisiYedek'in kaçıncı indisinde olduğunu tutar.
 -> ogrenciNumarasi: Silinecek öğrencinin numarasını fonksiyon boyunca tutar.
 -> while Döngüsü: 
 	-> r modunda açılan Ogrenci.txt dosyasını son karaktere kadar okuyup ogrenciBilgisiYedek içine atanır.
-	-> if: Dosyada başka veri olup olmadığını kontrol eder. Eğer varsa döngüden çıkıp ogrenciSilipYazdir'a atlar.
--> ogrenciSilipYazdir: while döngüsünde ikinci if'e girerse kod bu satırdan sonra işlem yapmaya devam eder.
+	-> if: ogrenciBilgisiYedek ile ogrenciNumarasi'ni karşılaştırır eşit ise ogrenciBilgisiYedek'in indisini q'ya atayıp g'yi arttırır.
 -> fclose: r modunda açılan dosya kapanır.
--> for Döngüsü: 
+-> fopen: Kapanan aynı dosya w modunda tekrar açılıp düzenlenen bilgiler yazılır.
+-> ilk for Döngüsü: 
 	-> ilk if:
 		-> ogrenciBilgisiYedek içine atanan öğrenci numaraları ile kullanıcıdan istenen numaranın eşitliğini kontrol eder.
-		-> Eğer eşitse döngü dğişkeni olan a'yı bir arttırarak dosyadaki o indisdeki öğrencinin bilgilerini yazdırmaz.
-		-> Eğer bu if'in içine girmişse bir öğrenci silinmiş demektir ve o yüzden g sayacı bir arttırılır.
- 	-> ikinci if: Eğer düzenleme yapılmamışsa uyarı verip fonksiyonu kapatıp ana fonksiyona gider.
-	-> fopen: Kapanan aynı dosya w modunda tekrar açılıp düzenlenen bilgiler yazılır.
+		-> Eğer eşitse dizinin bir sonraki elemanlarını üstüne yazar.
+-> if: Eğer düzenleme yapılmamışsa uyarı verip fonksiyonu kapatıp ana fonksiyona gider.
+-> ikinci for Döngüsü:
 	-> fprintf: Bilgiler dosyanın içine yazdırılır.
+->fclose= w modunda açılan dosya kapanır.
 
 ogrenciListele Fonksiyonu
 -> Ogrenci.txt dosyasına eklenen öğrencileri okuyup programda yazdırır.
 -> fopen fonksiyonu ile dosyayı açtık
--> ogrenciListeYazdir: Bu char dizisi dosyadaki her kelimeyi tutmak için atanmıştır.
--> i: Döngüye girecek olan ogrenciListeYazdir dizisinin indisidir.
--> b: Programda listelenecek olan öğrenci bilgilerinin düzenini sağlamak amacıyla atanmıştır.
 -> if: Dosyanın açılıp açılmadığını kontrol eder.
 -> while Döngüsü: Dosyadaki son kelimeye kadar döner.
--> if: b değişkeninin her 3'e bölümünde kalan 1 olduğu zaman bu if bloğunun içine girecektir. Burada da bir alt satıra geçme işlemi yapılıyor.
--> fscanf Fonksiyonu ile dosyadaki bilgiler okunuyor.
--> printf Fonksiyonu ile programda yazdırma işlemi yapılıyor.
+-> fputchar(fgetc(fp)): Bu yapı ile dosyadaki bütün verileri yazdırıyoruz.
 
 firmaEkle Fonksiyonu:
 -> Sisteme eklenen firmaların bilgilerini txt dosyasına yazar.
@@ -96,8 +96,12 @@ firmaEkle Fonksiyonu:
 -> firma *pFirma: firma firmaBilgisi'nin adresini tutar. Tutulan bilgileri dosyaya yazar.
 -> *f: Ana fonksiyonda struct arraylerinin indislerini tutan f'nin adresini fonksiyona çağırır.
 -> m: *f adresindeki değeri yani Ana fonksiyondaki f'nin değerini tutar.
--> fopen: Olduğu dizinde Firma.txt adlı bir dosya arar, varsa üstüne işlem yapar yoksa dosya oluşturup işlem yapar.
-Not: fopen fonksiyonu "a" modunda çalıştığı için olduğu dizinde adı verilen dosyayı arar yoksa üstüne yazar.
+->firma firmaBilgisiYedek: Dosyadaki firma bilgilerini tutar.
+-> e: firmaBilgisiYedek'in indisini tutar.
+-> fopen: Dosyayı "a+" modunda açar. Olduğu dizinde Firma.txt adlı bir dosya arar, varsa içindeki bilgileri okur yoksa dosya oluşturur.
+-> if: Dosyanın açılamama durumunu kontrol eder.
+->fclose: Dosyayı kapatır.
+-> fopen: Dosyayı "a" modunda açar. Olduğu dizinde Firma.txt adlı bir dosya arar, varsa üzerine veri ekler yoksa dosya oluşturup kullanıcının girdiği verileri yazar.
 -> if: Dosyanın açılamama durumunu kontrol eder.
 ->fclose: Dosyayı kapatır.
 
@@ -128,32 +132,76 @@ Not: fopen fonksiyonu "r" modunda çalıştığı için olduğu dizinde dosya ar
 -> i: firmaBilgisiYedek için indis bilgisidir.
 -> a: for döngüsü değişkeni.
 -> g: Firma bilgilerinin silinip silinmediğini kontrol eden sayaç.
+-> q: Kullanıcıdan alınan firma vergi numarasının firmaBilgisiYedek'in kaçıncı indisinde olduğunu tutar.
 -> firmaVergiNo: Silinecek firmanın vergi numarasını fonksiyon boyunca tutar.
 -> while Döngüsü: 
 	-> r modunda açılan Firma.txt dosyasını son karaktere kadar okuyup firmaBilgisiYedek içine atanır.
-	-> if: Dosyada başka veri olup olmadığını kontrol eder. Eğer varsa döngüden çıkıp firmaSilipYazdir'a atlar.
--> firmaSilipYazdir: while döngüsünde ikinci if'e girerse kod bu satırdan sonra işlem yapmaya devam eder.
+	-> if: firmaBilgisiYedek ile firmaVergiNo kontrol edilir eşitse indisi q ile tutulur. g arttırılarak devam edilir.
 -> fclose: r modunda açılan dosya kapanır.
--> for Döngüsü: 
-	-> ilk if:
+->fopen: Kapanan dosya w modunda tekrar açılır.
+-> ilk for Döngüsü: 
+	-> if:
 		-> firmaBilgisiYedek içine atanan firma vergi numaraları ile kullanıcıdan istenen numaranın eşitliğini kontrol eder.
-		-> Eğer eşitse döngü dğişkeni olan a'yı bir arttırarak dosyadaki o indisdeki firmanın bilgilerini yazdırmaz.
-		-> Eğer bu if'in içine girmişse bir firma silinmiş demektir ve o yüzden g sayacı bir arttırılır.
- 	-> ikinci if: Eğer düzenleme yapılmamışsa uyarı verip fonksiyonu kapatıp ana fonksiyona gider.
-	-> fopen: Kapanan aynı dosya w modunda tekrar açılıp düzenlenen bilgiler yazılır.
+		-> Eğer eşitse dizinin bir sonraki indisindeki bilgiler atanarak firma silinmiş olur.
+ -> if: Eğer düzenleme yapılmamışsa uyarı verip fonksiyonu kapatıp ana fonksiyona gider.
+-> ikinci for Döngüsü:
 	-> fprintf: Bilgiler dosyanın içine yazdırılır.
+-> fclose: w modunda açılan dosya tekrar kapanır.
 
 firmaListele Fonksiyonu
 -> Firma.txt dosyasına eklenen firma bilgilerini okuyup programda yazdırır.
 -> fopen fonksiyonu ile dosyayı açtık
--> firmaListeYazdir: Bu char dizisi dosyadaki her kelimeyi tutmak için atanmıştır.
--> i: Döngüye girecek olan firmaListeYazdir dizisinin indisidir.
--> b: Programda listelenecek olan firma bilgilerinin düzenini sağlamak amacıyla atanmıştır.
 -> if: Dosyanın açılıp açılmadığını kontrol eder.
 -> while Döngüsü: Dosyadaki son kelimeye kadar döner.
--> if: b değişkeninin her 3'e bölümünde kalan 1 olduğu zaman bu if bloğunun içine girecektir. Burada da bir alt satıra geçme işlemi yapılıyor.
--> fscanf Fonksiyonu ile dosyadaki bilgiler okunuyor.
--> printf Fonksiyonu ile programda yazdırma işlemi yapılıyor.
+->fputchar(fgetc(fp)): Bu yapı ile birlikte dosyadaki bütün veriler yazılır.
+->fclose: dosya kapanır.
+
+ogrenciKontrol Fonksiyonu:
+-> Staj eklerken kullanıcının girdiği öğrenci numarasının kontrolünü yapan fonksiyondur.
+-> fopen: Ogrenci.txt dosyası r modunda açılır.
+-> while döngüsü dosyadaki son veriye kadar döner.
+-> Bütün veriler ogrenciBilgisiYedek'in içine atanır.
+-> Eğer kullanıcının girdiği değer bulunursa fonksiyondan hemen çıkar.
+-> Bulunamazsa hata verip çıkar.
+
+firmaKontrol Fonksiyonu:
+-> Staj eklerken kullanıcının girdiği firma vergi numarasının kontrolünü yapan fonksiyondur.
+-> fopen: Firma.txt dosyası r modunda açılır.
+-> while döngüsü dosyadaki son veriye kadar döner.
+-> Bütün veriler firmaBilgisiYedek'in içine atanır.
+-> Eğer kullanıcının girdiği değer bulunursa fonksiyondan hemen çıkar.
+-> Bulunamazsa hata verip çıkar.
+
+haftaHesapla Fonksiyonu:
+-> int değer dönen tek fonksiyondur.
+-> Kullanıcının girdiği tarihler arasındaki hafta sayısını hesaplar.
+-> Bu sayıyı döndürür.
+
+stajEkle Fonksiyonu:
+-> Kulannıcıdan alınan veriler gerekli kontroller yapıldıktan sonra dosyaya yazılması için oluşrturulmuştur.
+->fopen: Staj.txt dosyasını a modunda açtık.
+-> *s: Ana fonksiyonda struct arraylerinin indislerini tutan s'nin adresini fonksiyona çağırır.
+-> j: s'nin değerini tutar.
+-> fprintf: bilgiler dosyaya yazdırırlır.
+-> fclose: Dosya kapanır.
+
+stajKontrol Fonksiyonu:
+-> Eklenen stajla birlikte öğrencilerin stajı tamamlayıp tamamlamadığını kontrol eder.
+-> i: stajBilgisiYedek'in indis değişkenidir.
+-> e: stajBilgisiYedek2'in indis değişkenidir.
+-> a: Döngü değişkenidir.
+-> pt: pTamamlanmayanStaj'ın indis değişkenidir.
+-> hafta: Donanım ve yazılım stajlarının toplam hafta bilgisini tutar.
+-> stajBilgisiYedek: Dosyadan okunan verileri tutar.
+-> stajBilgisiYedek2: stajBilgisiYedek deki bilgiler eğer donanım stajını tamamlıyorsa buraya yazılır ve bu bilgilerle yazılım stajının tamamlanıp tamamlanmadığı kontrol edilir.
+-> pTamamlanmayanStaj: Tamamlanan stajlar Fonksiyon üzerinde yazılırken tamamlanmayan stajlar bu pointer struct array aracılığıyla tutulup bir başka fonksiyonda yazdırılır.
+
+tamamlanmayanStaj Fonksiyonu:
+-> stajKontrol fonksiyonunda kontroller sonucu tamamlanmadığı anlaşılan stajlar ekrana yazdırılır.
+-> i: Döngü değişkeni.
+-> *t: pTamamlanmayanStaj'ın indis bilgisini bu pointer ile tutup fonksiyona getirir.
+-> pt: pTamamlanmayanStaj'ın toplam indis bilgisini tutar.
+
 
 Ana Fonksiyon:
 menu_secim : Menüdeki işlemleri seçmeye yarar.
