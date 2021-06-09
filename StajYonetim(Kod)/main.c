@@ -109,7 +109,7 @@ void ogrenciSilme(struct ogrenci ogrenciBilgisiYedek[]){
 		}
 			i++;
 	}
-ogrenciSilipYazdir:
+
 	fclose(fp);
 fp = fopen("Ogrenci.txt","w");
 	for(a=0;a<(i-1);a++){
@@ -124,9 +124,6 @@ fp = fopen("Ogrenci.txt","w");
 		return;
 	}
 	for(a=0;a<(i-2);a++){
-		if(ogrenciBilgisiYedek[a].ogrenciNo==ogrenciNumarasi){
-		a++;
-}
 	fprintf(fp,"%s %s %d\n\n",ogrenciBilgisiYedek[a].ogrenciAd,ogrenciBilgisiYedek[a].ogrenciSoyad,ogrenciBilgisiYedek[a].ogrenciNo);
 }
 	fclose(fp);
@@ -135,7 +132,7 @@ fp = fopen("Ogrenci.txt","w");
 void ogrenciListele(){
 	
 	FILE *fp=fopen("Ogrenci.txt","r");
-	int i=0;
+	
 	
 	if(fp==NULL){
 		printf("Dosya Acilmadi");
@@ -151,6 +148,9 @@ void firmaEkle(struct firma firmaBilgisi[],int *f,struct firma *pFirma[],struct 
 	int m=*f;
 	int e=0;
 	FILE *fp=fopen("Firma.txt","a+");
+	if(fp==NULL){
+		printf("Dosya Acilmadi");
+}
 	while(!feof(fp)){
 		fscanf(fp,"%s %s %d",&firmaBilgisiYedek[e].firmaAd,&firmaBilgisiYedek[e].faaliyetAlani,&firmaBilgisiYedek[e].vergiNo);	
 		if(firmaBilgisiYedek[e].vergiNo==pFirma[m]->vergiNo){
@@ -369,11 +369,12 @@ void stajEkle(struct staj stajBilgisi[],int *s,struct staj *pStaj[],int hafta){
 	fclose(fp);
 }
 
-void stajKontrol(struct staj stajBilgisiYedek[],struct staj stajBilgisiYedek2[],struct staj *pTamamlanmayanStaj[],int *t){
+void stajKontrol(struct staj stajBilgisiYedek[],struct staj stajBilgisiYedek2[],struct staj *pTamamlanmayanStaj[],int *t,struct staj *pTamamlananStaj[],int *q){
 	
 	FILE *fp = fopen("Staj.txt","r");
 	int i=0,e=0,a=0;
 	int pt=0;
+	int ps=0;
 	int hafta=0;
 	while(!feof(fp)){
 		fscanf(fp,"%d %d %s %d",&stajBilgisiYedek[i].stajOgrenciNo,&stajBilgisiYedek[i].stajFirmaVergiNo,&stajBilgisiYedek[i].stajTuru,&stajBilgisiYedek[i].hafta);	
@@ -381,6 +382,8 @@ void stajKontrol(struct staj stajBilgisiYedek[],struct staj stajBilgisiYedek2[],
 			stajBilgisiYedek2[e].stajOgrenciNo = stajBilgisiYedek[i].stajOgrenciNo;
 			stajBilgisiYedek2[e].hafta = stajBilgisiYedek[i].hafta;
 			strcpy(stajBilgisiYedek2[e].stajTuru,stajBilgisiYedek[i].stajTuru);
+			pTamamlanmayanStaj[pt] = &stajBilgisiYedek[i];
+			pt++;
 			e++;	
 		}
 		else if(strcmp(stajBilgisiYedek[i].stajTuru,"Donanim") == 0){
@@ -395,7 +398,9 @@ void stajKontrol(struct staj stajBilgisiYedek[],struct staj stajBilgisiYedek2[],
 		if(stajBilgisiYedek[a].stajOgrenciNo==stajBilgisiYedek2[e].stajOgrenciNo && strcmp(stajBilgisiYedek[a].stajTuru,"Yazilim") == 0 && stajBilgisiYedek[a].hafta >= 4){
 			hafta = stajBilgisiYedek[a].hafta + stajBilgisiYedek2[e].hafta;
 					if(hafta >= 12){
-						printf("%d %d %s-%d %s-%d %d\n",stajBilgisiYedek[a].stajOgrenciNo,stajBilgisiYedek[a].stajFirmaVergiNo,stajBilgisiYedek[a].stajTuru,stajBilgisiYedek[a].hafta,stajBilgisiYedek2[e].stajTuru,stajBilgisiYedek2[e].hafta,hafta);
+						pTamamlananStaj[ps] = &stajBilgisiYedek[a];
+						pTamamlananStaj[ps]->hafta=hafta;
+						ps++;
 						
 					}
 					else{
@@ -410,14 +415,37 @@ void stajKontrol(struct staj stajBilgisiYedek[],struct staj stajBilgisiYedek2[],
 		}
 	}
 	*t=pt;
+	*q=ps;
 }
 
-void tamamlanmayanStaj(struct staj *pTamamlanmayanStaj[],int *t){
+void tamamlanmayanStaj(struct staj *pTamamlanmayanStaj[],int *t,struct staj *pTamamlananStaj[],int *q){
+	FILE *fp = fopen("Tamamlanmayan Stajlar.txt","w");
 	int pt=*t;
+	int ps=*q;
 	int i=0;
+	printf("Ogrenci Numarasi | Firma Vergi No | Staj Turu | Hafta Sayisi\n");
+	printf("---------------------------------------------------------------------\n");
 	for(i=0; i<pt; i++){
-		printf("%d %d %s %d",pTamamlanmayanStaj[i]->stajOgrenciNo,pTamamlanmayanStaj[i]->stajFirmaVergiNo,pTamamlanmayanStaj[i]->stajTuru,pTamamlanmayanStaj[i]->hafta);
+		if(pTamamlanmayanStaj[i]->stajOgrenciNo!=pTamamlananStaj[i]->stajOgrenciNo){
+		printf("%d\t  %d   \t   %s \t%d\n",pTamamlanmayanStaj[i]->stajOgrenciNo,pTamamlanmayanStaj[i]->stajFirmaVergiNo,pTamamlanmayanStaj[i]->stajTuru,pTamamlanmayanStaj[i]->hafta);
+		fprintf(fp,"%d %d %s %d\n",pTamamlanmayanStaj[i]->stajOgrenciNo,pTamamlanmayanStaj[i]->stajFirmaVergiNo,pTamamlanmayanStaj[i]->stajTuru,pTamamlanmayanStaj[i]->hafta);	
+		}
+			}
+	fclose(fp);
+}
+
+void tamamlananStaj(struct staj *pTamamlanmayanStaj[],int *t,struct staj *pTamamlananStaj[],int *q){
+	FILE *fp = fopen("Tamamlanan Stajlar.txt","w");
+	int pt=*t;
+	int ps=*q;
+	int i=0;
+	printf("Ogrenci Numarasi | Firma Vergi No | Staj Durumu | Hafta Sayisi\n");
+	printf("---------------------------------------------------------------------\n");
+	for(i=0; i<ps; i++){
+		printf("%d\t  %d   \t   Tamamlandi \t%d\n\n",pTamamlananStaj[i]->stajOgrenciNo,pTamamlananStaj[i]->stajFirmaVergiNo,pTamamlananStaj[i]->hafta);
+		fprintf(fp,"%d %d Tamamlandi %d\n",pTamamlananStaj[i]->stajOgrenciNo,pTamamlananStaj[i]->stajFirmaVergiNo,pTamamlananStaj[i]->hafta);
 	}
+	fclose(fp);
 }
 
 
@@ -428,6 +456,8 @@ int main()
     int f=0;
     int s=0;
     int t=0;
+    int q=0;
+    int m=0;
     int hafta;
 	struct ogrenci ogrenciBilgisi[10];
 	struct firma firmaBilgisi[10];
@@ -442,6 +472,12 @@ int main()
 	struct firma *pFirma[10];
 	struct staj *pStaj[10];
 	struct staj *pTamamlanmayanStaj[10];
+	struct staj *pTamamlananStaj[10];
+	
+
+		pTamamlanmayanStaj[0]=&m;
+		pTamamlananStaj[0]=&m;
+	
 	
     printf("\tStaj Yonetim Programina Hos Geldiniz\n\n");
     anamenu:
@@ -449,7 +485,8 @@ int main()
     printf("\t1- Ogrenci Islemleri\n");
     printf("\t2- Firma Islemleri\n");
     printf("\t3- Staj Islemleri\n");
-    printf("\n\t\t\t\t Programdan cikis icin 4 tusuna basiniz.\n");
+    printf("\t4- Hazirlayanlar\n");
+    printf("\n\t\t\t\t Programdan cikis icin 5 tusuna basiniz.\n");
     printf("\nBir islem seciniz: ");
     scanf("%d",&menu_secim);
     switch(menu_secim)
@@ -612,9 +649,9 @@ int main()
 					}
 					printf("Staj turunu giriniz(Donanim/Yazilim): ");
 					scanf("%s",stajBilgisi[s].stajTuru);
-					printf("Staja baslama tarihini giriniz(gun ay yil þeklinde): ");
+					printf("Staja baslama tarihini giriniz(gun ay yil seklinde): ");
 					scanf("%d %d %d",&stajBilgisi[s].stajBaslamaTarihi.gun,&stajBilgisi[s].stajBaslamaTarihi.ay,&stajBilgisi[s].stajBaslamaTarihi.yil);
-					printf("Staj bitis tarihi giriniz(gun ay yil þeklinde): ");
+					printf("Staj bitis tarihi giriniz(gun ay yil seklinde): ");
 					scanf("%d %d %d",&stajBilgisi[s].stajBitirmeTarihi.gun,&stajBilgisi[s].stajBitirmeTarihi.ay,&stajBilgisi[s].stajBitirmeTarihi.yil);
 					
 					pStaj[s]=&stajBilgisi[s];
@@ -632,8 +669,8 @@ int main()
 
                 case 2:
                 	printf("\n\t-----------Tamamlanmayan Stajlar-----------\n\n");
-
-					tamamlanmayanStaj(pTamamlanmayanStaj,&t);
+					stajKontrol(stajBilgisiYedek,stajBilgisiYedek2,pTamamlanmayanStaj,&t,pTamamlananStaj,&q);
+					tamamlanmayanStaj(pTamamlanmayanStaj,&t,pTamamlananStaj,&q);
                     goto altbolum3;
                     break;
 
@@ -641,7 +678,8 @@ int main()
                 	printf("\n\t-----------Tamamlanan Stajlar-----------\n\n");
                 	
                 	
-                	stajKontrol(stajBilgisiYedek,stajBilgisiYedek2,pTamamlanmayanStaj,&t);
+                	stajKontrol(stajBilgisiYedek,stajBilgisiYedek2,pTamamlanmayanStaj,&t,pTamamlananStaj,&q);
+                	tamamlananStaj(pTamamlanmayanStaj,&t,pTamamlananStaj,&q);
                     goto altbolum3;
                     break;
 
@@ -658,7 +696,12 @@ int main()
 
 
         case 4:
-            return 0;
+        	printf("\n\t\t\t-------------------Hazirlayanlar-------------------\n\n");
+        	printf("\t\t\t\tCaner Cakmak\t\t200601070\n\t\t\t\tOzmen Kahveci\t\t200601015");
+            
+            break;
+        case 5:
+        	return 0;
             break;
 
                 default:

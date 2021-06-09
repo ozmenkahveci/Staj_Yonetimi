@@ -33,6 +33,7 @@ ogrenciEkle Fonksiyonu:
 -> ogrenci *pOgrenci: ogrenci ogrenciBilgisi'nin adresini tutar. Tutulan bilgileri dosyaya yazar.
 -> *i: Ana fonksiyonda struct arraylerinin indislerini tutan i'nin adresini fonksiyona çağırır.
 -> k: *i adresindeki değeri yani Ana fonksiyondaki i'nin değerini tutar.
+-> e: ogrenciBilgisiYedek indis değişkeni.
 -> fopen: Ogrenci.txt dosyası a+ modunda açılarak eğer dosya yoksa oluşturur varsa da dosya sonuna kadar okunur.
 -> fclose: okuma ve yazma modunda açılan dosya kapanır.
 -> fopen: Olduğu dizinde Ogrenci.txt adlı bir dosya arar, varsa üstüne işlem yapar yoksa dosya oluşturup işlem yapar.
@@ -190,17 +191,25 @@ stajKontrol Fonksiyonu:
 -> i: stajBilgisiYedek'in indis değişkenidir.
 -> e: stajBilgisiYedek2'in indis değişkenidir.
 -> a: Döngü değişkenidir.
+-> t: Fonksiyonda dönen pt'nin değerini bu pointer aracılığıyla tutup bir başka fonksiyona taşır.
+-> q: Fonksiyonda dönen ps'nin değerini bu pointer aracılığıyla tutup bir başka fonksiyona taşır.
+-> ps: pTamamlananStaj'ın indis değişkenidir.
 -> pt: pTamamlanmayanStaj'ın indis değişkenidir.
 -> hafta: Donanım ve yazılım stajlarının toplam hafta bilgisini tutar.
 -> stajBilgisiYedek: Dosyadan okunan verileri tutar.
 -> stajBilgisiYedek2: stajBilgisiYedek deki bilgiler eğer donanım stajını tamamlıyorsa buraya yazılır ve bu bilgilerle yazılım stajının tamamlanıp tamamlanmadığı kontrol edilir.
--> pTamamlanmayanStaj: Tamamlanan stajlar Fonksiyon üzerinde yazılırken tamamlanmayan stajlar bu pointer struct array aracılığıyla tutulup bir başka fonksiyonda yazdırılır.
+-> pTamamlanmayanStaj: Tamamlanmayan stajlar bu pointer struct array aracılığıyla tutulup bir başka fonksiyonda yazdırılır.
+-> pTamamlananStaj: Tamamlanan stajlar bu pointer struct array aracılığıyla tutulup başka bir fonksiyonda yazdırılır.
 
 tamamlanmayanStaj Fonksiyonu:
 -> stajKontrol fonksiyonunda kontroller sonucu tamamlanmadığı anlaşılan stajlar ekrana yazdırılır.
+-> fopen: Fonksiyon w modunda açılarak daha önce atanan bilgiler dosyaya yazdırılır.
 -> i: Döngü değişkeni.
--> *t: pTamamlanmayanStaj'ın indis bilgisini bu pointer ile tutup fonksiyona getirir.
--> pt: pTamamlanmayanStaj'ın toplam indis bilgisini tutar.
+-> *q: pTamamlananStaj'ın indis bilgisini bu pointer işe tutup fonksiyona getirir.
+-> ps: pTamamlananStaj'ın toplam indisini tutar.
+-> pTamamlananStaj: Eğer staj bu fonksiyona geldiğinde tamamlanmamış olup daha sonrasında tamamlanmışsa onu kontrol edip yazdırmamak için çağrılmıştır.
+-> for Döngüsü:
+	-> Döngü pTamamlananStaj'ın indis bilgisi kadar dönerek bütün bilgiler önce ekrana sonra dosyaya yazdırılır.
 
 
 Ana Fonksiyon:
