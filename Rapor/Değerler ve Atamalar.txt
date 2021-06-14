@@ -3,7 +3,6 @@ typedef struct:
 -> gun: Tarihteki gün bilgisini tutar.
 -> ay: Tarihteki ay bilgisini tutar.
 -> yil: Tarihteki yil bilgisini tutar.
-
 Struct:
 
 ogrenci:
