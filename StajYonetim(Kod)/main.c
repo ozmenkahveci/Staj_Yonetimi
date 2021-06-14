@@ -266,7 +266,7 @@ void firmaListele(){
 }
 
 void ogrenciKontrol(struct ogrenci ogrenciBilgisiYedek[],struct staj *pStaj[],int *s){
-	FILE *fp = fopen("Ogrenci.txt","r");
+	FILE *fp = fopen("Ogrenci.txt","a+");
 	int i;
 	int j=*s;
 	while(!feof(fp)){
@@ -358,7 +358,7 @@ int haftaHesapla(struct staj *pStaj[],int *s){
 	return hafta;
 }
 
-void stajEkle(struct staj stajBilgisi[],int *s,struct staj *pStaj[],int hafta){
+void stajEkle(struct staj stajBilgisi[],int *s,struct staj *pStaj[]){
 	
 	int j=*s;
 	FILE *fp=fopen("Staj.txt","a");
@@ -371,7 +371,7 @@ void stajEkle(struct staj stajBilgisi[],int *s,struct staj *pStaj[],int hafta){
 
 void stajKontrol(struct staj stajBilgisiYedek[],struct staj stajBilgisiYedek2[],struct staj *pTamamlanmayanStaj[],int *t,struct staj *pTamamlananStaj[],int *q){
 	
-	FILE *fp = fopen("Staj.txt","r");
+	FILE *fp = fopen("Staj.txt","a+");
 	int i=0,e=0,a=0;
 	int pt=0;
 	int ps=0;
@@ -458,7 +458,6 @@ int main()
     int t=0;
     int q=0;
     int m=0;
-    int hafta;
 	struct ogrenci ogrenciBilgisi[10];
 	struct firma firmaBilgisi[10];
 	struct staj stajBilgisi[10];
@@ -474,9 +473,42 @@ int main()
 	struct staj *pTamamlanmayanStaj[10];
 	struct staj *pTamamlananStaj[10];
 	
+	ogrenciBilgisi[0].ogrenciNo=m;
+	firmaBilgisi[0].vergiNo=m;
+	stajBilgisi[0].stajOgrenciNo=m;
+	
+	ogrenciBilgisiYedek[0].ogrenciNo=m;
+	ogrenciBilgisiYedek[1].ogrenciNo=m;
+	ogrenciBilgisiYedek[2].ogrenciNo=m;
+	ogrenciBilgisiYedek[3].ogrenciNo=m;
+	ogrenciBilgisiYedek[4].ogrenciNo=m;
+	ogrenciBilgisiYedek[5].ogrenciNo=m;
+	ogrenciBilgisiYedek[6].ogrenciNo=m;
+	ogrenciBilgisiYedek[7].ogrenciNo=m;
+	ogrenciBilgisiYedek[8].ogrenciNo=m;
+	ogrenciBilgisiYedek[9].ogrenciNo=m;
+	
+	firmaBilgisiYedek[0].vergiNo=m;
+	firmaBilgisiYedek[1].vergiNo=m;
+	firmaBilgisiYedek[2].vergiNo=m;
+	firmaBilgisiYedek[3].vergiNo=m;
+	firmaBilgisiYedek[4].vergiNo=m;
+	firmaBilgisiYedek[5].vergiNo=m;
+	firmaBilgisiYedek[6].vergiNo=m;
+	firmaBilgisiYedek[7].vergiNo=m;
+	firmaBilgisiYedek[8].vergiNo=m;
+	firmaBilgisiYedek[9].vergiNo=m;
+	
+	stajBilgisiYedek[0].stajFirmaVergiNo=m;
+	stajBilgisiYedek2[0].stajFirmaVergiNo=m;
+	stajBilgisiYedek[0].stajOgrenciNo=m;
+	stajBilgisiYedek2[0].stajOgrenciNo=m;
 
-		pTamamlanmayanStaj[0]=&m;
-		pTamamlananStaj[0]=&m;
+	pOgrenci[0]=&m;
+	pFirma[0]=&m;
+	pStaj[0]=&m;
+	pTamamlanmayanStaj[0]=&m;
+	pTamamlananStaj[0]=&m;
 	
 	
     printf("\tStaj Yonetim Programina Hos Geldiniz\n\n");
@@ -658,9 +690,12 @@ int main()
 					
 					stajBilgisi[s].hafta = haftaHesapla(pStaj,&s);
 					
+					if(stajBilgisi[s].hafta < 4 || stajBilgisi[s].hafta > 8){
+						printf("\n\nHafta Sayisi 4'den veya Az 8'den Fazla Olamaz!!\n");
+						goto cikis;
+					}
 					
-					
-					stajEkle(stajBilgisi,&s,pStaj,hafta);
+					stajEkle(stajBilgisi,&s,pStaj);
 					
 					s++;
 				cikis:
